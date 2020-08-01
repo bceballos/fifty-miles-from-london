@@ -18,30 +18,58 @@ consumes:
 produces:
   - application/json
 paths:
-  /hello:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: hello_world
-    get:
-      description: Returns 'Hello' to the caller
-      # used as the method name of the controller
-      operationId: hello
+  # /hello:
+  #   # binds a127 app logic to a route
+  #   x-swagger-router-controller: hello_world
+  #   get:
+  #     description: Returns 'Hello' to the caller
+  #     # used as the method name of the controller
+  #     operationId: hello
+  #     parameters:
+  #       - name: name
+  #         in: query
+  #         description: The name of the person to whom to say hello
+  #         required: false
+  #         type: string
+  #     responses:
+  #       "200":
+  #         description: Success
+  #         schema:
+  #           # a pointer to a definition
+  #           $ref: "#/definitions/HelloWorldResponse"
+  #       # responses may fall through to errors
+  #       default:
+  #         description: Error
+  #         schema:
+  #           $ref: "#/definitions/ErrorResponse"
+  /haversine:
+
+    x-swagger-router-controller: funcs
+    haversine:
+      description: Takes 2 floats of Latitude and Longitude as input, and will output the distance to London Latitude and Longitude
+      operationId: haversine
       parameters:
-        - name: name
+        - latitude: latitude
           in: query
-          description: The name of the person to whom to say hello
-          required: false
-          type: string
+          description: The latitude of a user
+          required: true
+          type: float
+        
+        - longitude: longitude
+          in: query
+          description: The longitude of a user
+          required: true
+          type: float
       responses:
-        "200":
-          description: Success
-          schema:
-            # a pointer to a definition
-            $ref: "#/definitions/HelloWorldResponse"
-        # responses may fall through to errors
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
+          "200":
+            description: Success
+            schema: 
+              # a pointer to definition
+              $ref: '#/definitions/haversine'
+          default:
+            description: Error
+            schema:
+              $ref: "#/definitions/ErrorResponse"
   /swagger:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
