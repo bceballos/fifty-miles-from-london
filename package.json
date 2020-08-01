@@ -1,0 +1,22 @@
+{
+  "name": "fifty-miles-from-london",
+  "version": "0.0.1",
+  "private": true,
+  "description": "An API that calls a heroku endpoint and will return if the users within the object are in or within 50 miles of London",
+  "keywords": [],
+  "author": "Brennan Ceballos Peña",
+  "license": "ISC",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.12.3",
+    "swagger-express-mw": "^0.1.0"
+  },
+  "devDependencies": {
+    "should": "^7.1.0",
+    "supertest": "^1.0.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "swagger project test"
+  }
+}
