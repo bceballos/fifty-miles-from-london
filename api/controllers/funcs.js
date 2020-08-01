@@ -1,6 +1,23 @@
 'use strict';
     module.exports = {}
 
+    function get(link) {
+        let https = require('https');
+        https.get(link, (response) => {
+            let data = '';
+
+            response.on('data', (chunk) => {
+                data += chunk;
+            });
+
+            response.on('end', () => {
+                console.log(JSON.parse(data));
+            });
+        }).on("error", (error) => {
+            console.log("Error: ", + error.message);
+        });
+    }
+
     function haversine(lat, long) {
         // All Latitudes and Longitudes converted to radians
         // Latitude and Longitude of London gotten from https://www.latlong.net/place/london-the-uk-14153.html
