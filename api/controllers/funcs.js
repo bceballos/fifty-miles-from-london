@@ -2,20 +2,12 @@
     module.exports = {}
 
     function get(link) {
-        let https = require('https');
-        https.get(link, (response) => {
-            let data = '';
-
-            response.on('data', (chunk) => {
-                data += chunk;
-            });
-
-            response.on('end', () => {
-                console.log(JSON.parse(data));
-            });
-        }).on("error", (error) => {
-            console.log("Error: ", + error.message);
-        });
+        let superagent = require('superagent');
+        
+        superagent.get(link).end((err, res) => {
+            if (err) {return console.log(err); }
+            console.log(res.body);
+        })
     }
 
     function haversine(lat, long) {
