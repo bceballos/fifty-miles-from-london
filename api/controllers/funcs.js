@@ -5,7 +5,8 @@ const e = require('express');
 const superagent = require('superagent');
 
     module.exports = {
-        get: get
+        get: get,
+        post: post
     }
 
     function get(req, res) {
@@ -36,11 +37,14 @@ const superagent = require('superagent');
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
         return R * c;
-    }
+    };
 
     /*
         * POST the JSON object or the errors
         */
-    // post(userArray) {
-
-    // }
+    function post(req, res) {
+        superagent.post('/users').send(req.body).end((err, result) => {
+            if (err) { return console.log(err); }
+            else { return res.json(result.body); }
+        });
+    };
