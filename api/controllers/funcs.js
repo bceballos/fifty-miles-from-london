@@ -1,4 +1,7 @@
 'use strict';
+
+    const superagent = require('superagent');
+
     module.exports = {}
 
     function haversine(lat, long) {
@@ -22,9 +25,9 @@
         return R * c;
     }
 
-        /*
-         * POST the JSON object or the errors
-         */
-        // post(userArray) {
-
-        // }
+    /*
+        * POST the JSON object or the errors
+        */
+    post(req, res) {
+        superagent.request.post('/')
+    }
