@@ -30,12 +30,5 @@ const { json } = require('express');
         return R * c;
     };
 
-    /*
-        * POST the JSON object or the errors
-        */
-    function post(req, res) {
-        superagent.post('/users').send(req.body).end((err, result) => {
-            if (err) { return console.log(err); }
-            else { return res.json(result.body); }
         });
     };
