@@ -30,5 +30,27 @@ const { json } = require('express');
         return R * c;
     };
 
+
+    function returnUsers(req, res) {
+        const url = req.swagger.params.name.value || "https://bpdts-test-app.herokuapp.com/users"
+
+        superagent.get(url).end((err, result) => {
+            if (err) { 
+                return err; 
+            }
+            else { 
+                let usersList = result.body;
+                Object.entries(usersList).forEach(([key, value]) => {
+                    if (haversine(value.latitude, value.longitude) > 80) {
+                        delete usersList[key];
+                    } else {
+                        value.haversine = haversine(value.latitude, value.longitude);
+                    }
+                });
+
+                usersList = usersList.filter(user => user);
+
+                return res.json(usersList);
+            }
         });
-    };
+    }
