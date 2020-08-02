@@ -3,19 +3,10 @@
 const e = require('express');
 
 const superagent = require('superagent');
+const { json } = require('express');
 
     module.exports = {
-        get: get,
-        post: post
-    }
-
-    function get(req, res) {
-
-        superagent.get(req.swagger.params.name.value).end((err, result) => {
-            if (err) { return console.log(err); }
-            else { return res.json(result.body); }
-        });
-
+        get: returnUsers,
     }
 
     function haversine(lat, long) {
