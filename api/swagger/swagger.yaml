@@ -18,13 +18,14 @@ consumes:
 produces:
   - application/json
 paths:
-  /hello:
+  /get:
     # binds a127 app logic to a route
-    x-swagger-router-controller: hello_world
+    #x-swagger-router-controller: hello_world
+    x-swagger-router-controller: funcs
     get:
       description: Returns 'Hello' to the caller
       # used as the method name of the controller
-      operationId: hello
+      operationId: get
       parameters:
         - name: name
           in: query

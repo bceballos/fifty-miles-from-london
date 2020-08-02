@@ -1,5 +1,21 @@
 'use strict';
-    module.exports = {}
+
+const e = require('express');
+
+const superagent = require('superagent');
+
+    module.exports = {
+        get: get
+    }
+
+    function get(req, res) {
+
+        superagent.get(req.swagger.params.name.value).end((err, result) => {
+            if (err) { return console.log(err); }
+            else { return res.json(result.body); }
+        });
+
+    }
 
     function haversine(lat, long) {
         // All Latitudes and Longitudes converted to radians
@@ -22,9 +38,9 @@
         return R * c;
     }
 
-        /*
-         * POST the JSON object or the errors
-         */
-        // post(userArray) {
+    /*
+        * POST the JSON object or the errors
+        */
+    // post(userArray) {
 
-        // }
+    // }
