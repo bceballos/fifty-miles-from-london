@@ -88,7 +88,7 @@ A haversine function can be used to calculate the distance between two point ove
         return distance
     }
 
-    function POST(array JSON Objects) {
+    function returnUsers(array JSON Objects) {
         if input is not array {
             return status and error (bad data?)
         }
