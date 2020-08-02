@@ -2,7 +2,7 @@
 
     const superagent = require('superagent');
 
-    module.exports = {}
+    module.exports = {post}
 
     function haversine(lat, long) {
         // All Latitudes and Longitudes converted to radians
@@ -23,11 +23,14 @@
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
         return R * c;
-    }
+    };
 
     /*
         * POST the JSON object or the errors
         */
-    post(req, res) {
-        superagent.request.post('/')
-    }
+    function post(req, res) {
+        superagent.post('/users').send(req.body).end((err, result) => {
+            if (err) { return console.log(err); }
+            else { return res.json(result.body); }
+        });
+    };
