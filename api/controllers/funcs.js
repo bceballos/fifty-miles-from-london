@@ -6,7 +6,7 @@ const superagent = require('superagent');
 const { json } = require('express');
 
     module.exports = {
-        get: returnUsers,
+        returnUsers: returnUsers,
     }
 
     function haversine(lat, long) {
@@ -32,7 +32,7 @@ const { json } = require('express');
 
 
     function returnUsers(req, res) {
-        const url = req.swagger.params.name.value || "https://bpdts-test-app.herokuapp.com/users"
+        const url = req.swagger.params.url.value || "https://bpdts-test-app.herokuapp.com/users"
 
         superagent.get(url).end((err, result) => {
             if (err) { 
