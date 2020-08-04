@@ -20,7 +20,6 @@ produces:
 paths:
   /returnUsers:
     # binds a127 app logic to a route
-    #x-swagger-router-controller: hello_world
     x-swagger-router-controller: funcs
     get:
       description: Returns a list of users that are in or within 50 miles of London from the URL provided or a default URL https://bpdts-test-app.herokuapp.com/users

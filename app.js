@@ -2,7 +2,6 @@
 
 var SwaggerExpress = require('swagger-express-mw');
 var app = require('express')();
-var SwaggerUI = require('swagger-ui');
 module.exports = app; // for testing
 
 var config = {
