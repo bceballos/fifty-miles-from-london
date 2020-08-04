@@ -30,6 +30,19 @@ const { json } = require('express');
         return R * c;
     };
 
+    function limitUserId(url) {
+        if (url.includes("/user/")) {
+            let group = url.match(/([^\/]+$)/gm);
+            if (Array.isArray(group)) {
+                if (group[0] < 1) {
+                    url = url.replace(group[0], "1");
+                } else if (group[0] > 1000) {
+                    url = url.replace(group[0], "1000");
+                }
+            }
+        }
+        return url;
+    }
 
     function returnUsers(req, res) {
         const url = req.swagger.params.url.value || "https://bpdts-test-app.herokuapp.com/users"
@@ -40,6 +53,10 @@ const { json } = require('express');
             if (err) { return err; } else { return max = result.body.length; }
         });
 
+    function returnUsers(req, res) {
+        // Further validation could include checking that the id of user does not go above dynamic limits done by using a function similar to above to get the max and min ids
+        const url = limitUserId(req.swagger.params.url.value || "https://bpdts-test-app.herokuapp.com/users");
+        
         superagent.get(url).end((err, result) => {
             if (err) {
                 //Better error handling on bad get
