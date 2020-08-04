@@ -100,25 +100,27 @@ const { json } = require('express');
                                 delete usersList[key];
                             }
                         } else {
-                            userList[key] = userError(userList[key], userPropertiesError(value));
+                            userList[key] = userError(userList[key], userPropertiesError(value)); //Replace existing object with error object
                         }
                     });
                     // Prune off empty users
                     usersList = usersList.filter(user => user);
+                    if (usersList === undefined || usersList.length == 0) { // If there are no users output error
+                        return res.json({message: `ERROR: There were no users in the query within 50 miles of London`})
+                    }
+                    return res.json(usersList); // Return the user list
                 } else { // Else if there is only 1 user or no users at all 
                     // Validate if it's a user or not
                     if (verifyLatAndLong(result.body)) {
                         // If it is a user check the haversine formula
                         if (haversine(result.body.latitude, result.body.longitude) > 80) {
-                            return res.json();
+                            return res.json({message: `ERROR: The user ${result.body.id} is not within 50 miles of London`});
                         }
                     } else {
                         //Remove data and replace with error
                         return res.json(userPropertiesError(result.body));
                     }
                 }
-                //If user list is empty return message no users within 50 miles of London
-                return res.json(usersList); // Return the user list
             }
         });
     }
