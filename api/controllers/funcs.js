@@ -48,10 +48,6 @@ const { json } = require('express');
         const url = req.swagger.params.url.value || "https://bpdts-test-app.herokuapp.com/users"
         let min = 0, max = 0;
 
-        //Get Min and Max User IDS to constrain /user/{id}
-        superagent.get("https://bpdts-test-app.herokuapp.com/users").end((err, result) => {
-            if (err) { return err; } else { return max = result.body.length; }
-        });
     // function getMaxUsers(req, res) {
     //     let maxId = 0;
     //     superagent
