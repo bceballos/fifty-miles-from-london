@@ -115,6 +115,8 @@ const { json } = require('express');
                         // If it is a user check the haversine formula
                         if (haversine(result.body.latitude, result.body.longitude) > 80) {
                             return res.json({message: `ERROR: The user ${result.body.id} is not within 50 miles of London`});
+                        } else {
+                            return res.json(result.body);
                         }
                     } else {
                         //Remove data and replace with error
