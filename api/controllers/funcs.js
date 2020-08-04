@@ -52,6 +52,16 @@ const { json } = require('express');
         superagent.get("https://bpdts-test-app.herokuapp.com/users").end((err, result) => {
             if (err) { return err; } else { return max = result.body.length; }
         });
+    // function getMaxUsers(req, res) {
+    //     let maxId = 0;
+    //     superagent
+    //         .get("https://bpdts-test-app.herokuapp.com/users")
+    //         .then(response => {
+    //             maxId = response.body[response.body.length - 1].id;
+    //         })
+    //         .catch((err) => err.message);
+    //     return maxId;
+    // }
 
     function returnUsers(req, res) {
         // Further validation could include checking that the id of user does not go above dynamic limits done by using a function similar to above to get the max and min ids
