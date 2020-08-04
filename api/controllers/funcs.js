@@ -88,28 +88,37 @@ const { json } = require('express');
         superagent.get(url).end((err, result) => {
             if (err) {
                 //Better error handling on bad get
-                return err; 
+                return res.json(err); 
             }
-            else { 
+            else {
                 let usersList = result.body;
                 // Check if body is an array
-                if (Array.isArray(result.body)) {
-                    // If result is an array then it is iterable
-                    Object.entries(usersList).forEach(([key, value]) => {
-                        // Validate that users have int lat and int long values
-                        if (haversine(value.latitude, value.longitude) > 80) { //If the distance is greater than 80 miles delete the user
-                            delete usersList[key];
+                if (Array.isArray(result.body)) { // If result is an array then it is iterable
+                    Object.entries(usersList).forEach(([key, value]) => { //Loop through all the json objects returned by the call
+                        if (verifyLatAndLong(value)) {// Validate that users have valid int lat and int long values
+                            if (haversine(value.latitude, value.longitude) > 80) { //If the distance is greater than 80 miles delete the user
+                                delete usersList[key];
+                            }
+                        } else {
+                            userList[key] = userError(userList[key], userPropertiesError(value));
                         }
                     });
                     // Prune off empty users
                     usersList = usersList.filter(user => user);
-                } else {
-                    if (haversine(result.body.latitude, result.body.longitude) > 80) {
-                        return res.json();
+                } else { // Else if there is only 1 user or no users at all 
+                    // Validate if it's a user or not
+                    if (verifyLatAndLong(result.body)) {
+                        // If it is a user check the haversine formula
+                        if (haversine(result.body.latitude, result.body.longitude) > 80) {
+                            return res.json();
+                        }
+                    } else {
+                        //Remove data and replace with error
+                        return res.json(userPropertiesError(result.body));
                     }
                 }
-
-                return res.json(usersList);
+                //If user list is empty return message no users within 50 miles of London
+                return res.json(usersList); // Return the user list
             }
         });
     }
