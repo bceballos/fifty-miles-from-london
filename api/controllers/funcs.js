@@ -31,22 +31,22 @@ const { json } = require('express');
     };
 
     function limitUserId(url) {
-        if (url.includes("/user/")) {
-            let group = url.match(/([^\/]+$)/gm);
-            if (Array.isArray(group)) {
-                if (group[0] < 1) {
+        if (url.includes("/user/")) { //Check if the url is /user/ for /user/{id}
+            let group = url.match(/([^\/]+$)/gm); // Match the {id}
+            if (Array.isArray(group)) { // If there are results in the match
+                if (group[0] < 1) { // Limit anything below id 1 to 1
                     url = url.replace(group[0], "1");
-                } else if (group[0] > 1000) {
+                } else if (group[0] > 1000) { // Limit anything over id 1000 to 1000
                     url = url.replace(group[0], "1000");
                 }
             }
         }
-        return url;
+        return url; // Return the URL
     }
 
     function verifyLatAndLong(object) {
-        if (object.hasOwnProperty('latitude') && object.hasOwnProperty('longitude')) {
-            if (isFinite(object.latitude) && isFinite(object.longitude)) {
+        if (object.hasOwnProperty('latitude') && object.hasOwnProperty('longitude')) { // Check whether the passed object has latitude or longitude
+            if (isFinite(object.latitude) && isFinite(object.longitude)) { // Check that the latitude and longitude are floats
                 return true;
             } else {
                 return false;
@@ -56,7 +56,7 @@ const { json } = require('express');
         }
     }
 
-    function userPropertiesError(object) {
+    function userPropertiesError(object) {  // Function is the same as above but generates the error message instead
         if (object.hasOwnProperty('latitude') && object.hasOwnProperty('longitude')) {
             if (!isFinite(object.latitude) && !isFinite(object.longitude)) {
                 return "ERROR: The latitude and longitude of the data are not property type int";
@@ -66,7 +66,7 @@ const { json } = require('express');
         }
     }
 
-    function userError(id, error, message) {
+    function userError(id, message) { // Create JSON object for the error
         return {id: id, message: message}
     }
 
@@ -83,7 +83,7 @@ const { json } = require('express');
 
     function returnUsers(req, res) {
         // Further validation could include checking that the id of user does not go above dynamic limits done by using a function similar to above to get the max and min ids
-        const url = limitUserId(req.swagger.params.url.value || "https://bpdts-test-app.herokuapp.com/users");
+        const url = limitUserId(req.swagger.params.url.value || "https://bpdts-test-app.herokuapp.com/users"); // It's limited to avoid dependancy of error catching on superagent which is temperamental
         
         superagent.get(url).end((err, result) => {
             if (err) {
