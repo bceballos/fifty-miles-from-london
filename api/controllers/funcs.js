@@ -44,9 +44,31 @@ const { json } = require('express');
         return url;
     }
 
-    function returnUsers(req, res) {
-        const url = req.swagger.params.url.value || "https://bpdts-test-app.herokuapp.com/users"
-        let min = 0, max = 0;
+    function verifyLatAndLong(object) {
+        if (object.hasOwnProperty('latitude') && object.hasOwnProperty('longitude')) {
+            if (isFinite(object.latitude) && isFinite(object.longitude)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    function userPropertiesError(object) {
+        if (object.hasOwnProperty('latitude') && object.hasOwnProperty('longitude')) {
+            if (!isFinite(object.latitude) && !isFinite(object.longitude)) {
+                return "ERROR: The latitude and longitude of the data are not property type int";
+            }
+        } else {
+            return "ERROR: The data does not have latitude or longitude";
+        }
+    }
+
+    function userError(id, error, message) {
+        return {id: id, message: message}
+    }
 
     // function getMaxUsers(req, res) {
     //     let maxId = 0;
