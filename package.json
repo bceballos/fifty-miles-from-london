@@ -16,6 +16,7 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
+    "jest": "^26.2.2",
     "should": "^7.1.0",
     "supertest": "^1.0.0"
   },
