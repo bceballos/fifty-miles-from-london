@@ -18,18 +18,18 @@ consumes:
 produces:
   - application/json
 paths:
-  /get:
+  /returnUsers:
     # binds a127 app logic to a route
     #x-swagger-router-controller: hello_world
     x-swagger-router-controller: funcs
     get:
-      description: Returns 'Hello' to the caller
+      description: Returns a list of users that are in or within 50 miles of London from the URL provided or a default URL https://bpdts-test-app.herokuapp.com/users
       # used as the method name of the controller
       operationId: get
       parameters:
-        - name: name
+        - name: url
           in: query
-          description: The name of the person to whom to say hello
+          description: The URL to get the users from
           required: false
           type: string
       responses:
@@ -37,7 +37,7 @@ paths:
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/HelloWorldResponse"
+            $ref: "#/definitions/returnUsersResponse"
         # responses may fall through to errors
         default:
           description: Error
@@ -45,14 +45,43 @@ paths:
             $ref: "#/definitions/ErrorResponse"
   /swagger:
     x-swagger-pipe: swagger_raw
+    
 # complex objects have schema definitions
 definitions:
-  HelloWorldResponse:
+  returnUsersResponse:
     required:
-      - message
+      - array
     properties:
-      message:
-        type: string
+      array:
+        type: array
+        items:
+          type: object
+          required:
+            - latitude
+            - longitude
+          properties:
+            id:
+              type: integer
+            first_name:
+              type: string
+            last_name: 
+              type: string
+            email:
+              type: string
+            ip_address:
+              type: string
+            latitude:
+              type: integer
+            longitude:
+              type: integer
+        example:
+          - id: 1
+            first_name: Ancell
+            last_name: Garnsworthy
+            email: agarnsworthy7d@seattletimes.com
+            ip_address: 67.4.69.137
+            latitude: 51.6553959
+            longitude:
   ErrorResponse:
     required:
       - message
