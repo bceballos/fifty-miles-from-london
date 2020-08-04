@@ -18,8 +18,6 @@ SwaggerExpress.create(config, function(err, swaggerExpress) {
   app.listen(port);
 
   if (swaggerExpress.runner.swagger.paths['/returnUsers']) {
-    console.log('try this:\ncurl http://127.0.0.1:' + port + "/get?name=https://bpdts-test-app.herokuapp.com/users");
-  } else {
-    console.log("Chief it don't");
+    // Open swagger page
   }
 });
