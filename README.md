@@ -1,4 +1,13 @@
 # PROGRAMMING TEST
+
+## IMPORTANT NOTE
+
+This repo and API works with swagger so after doing npm i for all the dependencies, make sure to run the following commands:
+````swagger project test```` in order to run tests
+````swagger project start```` in order to start the API (make sure to run this separately from swagger project test or else the test will fail)
+````swagger project edit```` in order to view the swagger UI needs swagger project start to be running
+
+____________
 ## TASK
 
 The task is to build an API which calls the given herokuapp API and returns a list of people who are listed as living in London, or whose current coordinates are within 50 miles of London
