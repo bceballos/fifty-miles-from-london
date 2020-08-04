@@ -1,12 +1,11 @@
 'use strict';
 
 const e = require('express');
-
 const superagent = require('superagent');
 const { json } = require('express');
 
     module.exports = {
-        returnUsers: returnUsers,
+        get: returnUsers,
     }
 
     function haversine(lat, long) {
@@ -23,6 +22,7 @@ const { json } = require('express');
         // Big R for Radius of the earth in miles
         const R = 3958.8;
 
+        
         const a = Math.pow(Math.sin(diffLat / 2), 2) + Math.cos(londonLat * toRadians) * Math.cos(lat * toRadians) * Math.pow(Math.sin(diffLong / 2),2);
 
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
@@ -33,22 +33,36 @@ const { json } = require('express');
 
     function returnUsers(req, res) {
         const url = req.swagger.params.url.value || "https://bpdts-test-app.herokuapp.com/users"
+        let min = 0, max = 0;
+
+        //Get Min and Max User IDS to constrain /user/{id}
+        superagent.get("https://bpdts-test-app.herokuapp.com/users").end((err, result) => {
+            if (err) { return err; } else { return max = result.body.length; }
+        });
 
         superagent.get(url).end((err, result) => {
-            if (err) { 
+            if (err) {
+                //Better error handling on bad get
                 return err; 
             }
             else { 
                 let usersList = result.body;
-                Object.entries(usersList).forEach(([key, value]) => {
-                    if (haversine(value.latitude, value.longitude) > 80) {
-                        delete usersList[key];
-                    } else {
-                        value.haversine = haversine(value.latitude, value.longitude);
+                // Check if body is an array
+                if (Array.isArray(result.body)) {
+                    // If result is an array then it is iterable
+                    Object.entries(usersList).forEach(([key, value]) => {
+                        // Validate that users have int lat and int long values
+                        if (haversine(value.latitude, value.longitude) > 80) { //If the distance is greater than 80 miles delete the user
+                            delete usersList[key];
+                        }
+                    });
+                    // Prune off empty users
+                    usersList = usersList.filter(user => user);
+                } else {
+                    if (haversine(result.body.latitude, result.body.longitude) > 80) {
+                        return res.json();
                     }
-                });
-
-                usersList = usersList.filter(user => user);
+                }
 
                 return res.json(usersList);
             }
