@@ -117,3 +117,11 @@ A haversine function can be used to calculate the distance between two point ove
     POST(GET(url))
 
 > Notes: The downside is the value of 80 used in the operate function is composed of the 30 mile radius of Central London + 50 miles of catchment, this is not correct as London is not a perfect circle. A solution to this problem would be to calculate the distance of 50 miles towards the latitude and longitude of London and then use an external library to check if the PostCode of the new latitude and longitude values is in London
+
+____________
+
+## CONCLUSION
+
+In conclusion I think that there is areas for improvement within the API, especially the error catching which is fairly rudimentary, however I don't think that for the scope it should go too much further.
+
+I could have implemented a status code system and a more concrete / robust error generation if it wasn't for the time constraint. Another limitation I had was creating a minimum and maximum user id cap based on the /users request. Unfortunately I was not able to get that working within the time limit and as such I have not implemented it, however there is mention of it and an example POC showing how it could be implemented as a comment in my code.
